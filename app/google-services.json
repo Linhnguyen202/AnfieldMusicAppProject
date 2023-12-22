@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "843674851905",
+    "project_id": "anfieldauth",
+    "storage_bucket": "anfieldauth.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:843674851905:android:a4d52c8fb198a9848004c0",
+        "android_client_info": {
+          "package_name": "com.example.anfieldmusicapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDejQA6hN36b_x9Ky1v8F8o85Yia8pKNHo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

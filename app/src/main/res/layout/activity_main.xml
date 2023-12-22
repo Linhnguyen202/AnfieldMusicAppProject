@@ -4,15 +4,118 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="#151521">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/layoutBottomMusic"
+        >
+        <fragment
+            android:id="@+id/containerFragment"
+            android:layout_width="match_parent"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_height="match_parent"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/navigtion"
+            android:backgroundTint="#151521"/>
+    </FrameLayout>
+
+    <RelativeLayout
+            android:id="@+id/layoutBottomMusic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="14dp"
+            android:paddingHorizontal="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
+            android:layout_marginBottom="5dp"
+            android:visibility="gone"
+            android:background="@drawable/background_playiew"
+            >
+            <androidx.cardview.widget.CardView
+                android:id="@+id/musicBottomImgCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                app:cardCornerRadius="10dp">
+                <ImageView
+                    android:id="@+id/musicBottomImg"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true"
+                    android:src="@drawable/ic_launcher_background"
+                    android:layout_width="50dp"
+                    android:layout_height= "50dp"
+                    />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/musicTitle"
+                android:layout_width="wrap_content"
+                android:text="music title"
+                android:textColor="@color/white"
+                android:fontFamily="@font/afacad_bold"
+                android:textSize="20sp"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/musicBottomImgCard"
+                android:layout_toStartOf="@+id/hanleStartMusicBottom"
+                android:layout_marginLeft="12dp"/>
+            <TextView
+                android:id="@+id/authorName"
+                android:layout_width="wrap_content"
+                android:text="author name"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/musicBottomImgCard"
+                android:layout_toStartOf="@+id/hanleStartMusicBottom"
+                android:layout_below="@id/musicTitle"
+                android:layout_marginLeft="12dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/afacad_bold"
+                android:textSize="16sp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:layout_marginRight="40dp"/>
+            <ImageView
+                android:id="@+id/handlePreMusicBottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_skip_previous_24"
+                android:layout_toStartOf="@+id/hanleStartMusicBottom"
+                android:layout_centerVertical="true"/>
+            <ImageView
+                android:id="@+id/hanleStartMusicBottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+               android:layout_toStartOf="@+id/handleNextMusicBottom"
+                android:src="@drawable/play_icon"
+                android:layout_marginHorizontal="20dp"/>
+            <ImageView
+                android:id="@+id/handleNextMusicBottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_skip_next_24"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        app:menu="@menu/menu"
+        android:background="#151521"
+        app:itemTextColor="@color/icon_color"
+        app:itemIconTint="@color/icon_color"
+        android:visibility="visible"
+        />
+    <include layout="@layout/player_view"
+        android:id="@+id/playerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,6 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterScreen">
-
+    tools:context=".RegisterScreen"
+    android:background="@drawable/bg_signin">
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <fragment
+            android:id="@+id/containerFragment"
+            android:layout_width="match_parent"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_height="match_parent"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/register_navigation"
+            android:backgroundTint="#151521"/>
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

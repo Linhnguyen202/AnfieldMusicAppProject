@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/searchItemCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#24242E">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp">
+            <ImageView
+                android:id="@+id/songBanner"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_launcher_background"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="14dp"/>
+            <TextView
+                android:id="@+id/searchItemTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This is a title"
+                android:textColor="@color/white"
+                android:layout_toEndOf="@id/songBanner"
+                android:textSize="20sp"
+                android:fontFamily="@font/afacad_bold"
+                />
+            <TextView
+                android:id="@+id/searchItemArtist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This is a artist"
+                android:textColor="#959595"
+                android:layout_toEndOf="@id/songBanner"
+                android:layout_below="@+id/searchItemTitle"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/afacad_bold"
+                />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

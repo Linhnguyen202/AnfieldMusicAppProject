@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/navigtion">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigtion"
+    app:startDestination="@id/homeScreen">
 
+    <fragment
+        android:id="@+id/homeScreen"
+        android:name="com.example.anfieldmusicapp.layout.HomeScreen"
+        android:label="fragment_home_screen"
+        tools:layout="@layout/fragment_home_screen" />
+
+    <fragment
+        android:id="@+id/searchScreen"
+        android:name="com.example.anfieldmusicapp.layout.SearchScreen"
+        android:label="fragment_search_screen"
+        tools:layout="@layout/fragment_search_screen" />
+    <fragment
+        android:id="@+id/menuScreen"
+        android:name="com.example.anfieldmusicapp.layout.MenuScreen"
+        android:label="fragment_menu_screen"
+        tools:layout="@layout/fragment_menu_screen" />
+    <fragment
+        android:id="@+id/profileScreen"
+        android:name="com.example.anfieldmusicapp.layout.ProfileScreen"
+        android:label="fragment_profile_screen"
+        tools:layout="@layout/fragment_profile_screen" >
+        <action
+            android:id="@+id/action_profileScreen_to_splashScreen"
+            app:destination="@id/splashScreen" />
+    </fragment>
+    <activity
+        android:id="@+id/splashScreen"
+        android:name="com.example.anfieldmusicapp.SplashScreen"
+        android:label="activity_splash_screen"
+        tools:layout="@layout/activity_splash_screen" />
 </navigation>

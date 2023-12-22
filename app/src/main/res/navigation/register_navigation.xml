@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/register_navigation"
+    app:startDestination="@id/startRegisterScreen">
+
+    <fragment
+        android:id="@+id/startRegisterScreen"
+        android:name="com.example.anfieldmusicapp.layout.StartRegisterScreen"
+        android:label="fragment_start_register_screen"
+        tools:layout="@layout/fragment_start_register_screen" >
+        <action
+            android:id="@+id/action_startRegisterScreen_to_endRegisterScreen"
+            app:destination="@id/endRegisterScreen" />
+        <action
+            android:id="@+id/action_startRegisterScreen_to_loginScreen"
+            app:destination="@id/loginScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/endRegisterScreen"
+        android:name="com.example.anfieldmusicapp.layout.EndRegisterScreen"
+        android:label="fragment_end_register_screen"
+        tools:layout="@layout/fragment_end_register_screen" >
+        <action
+            android:id="@+id/action_endRegisterScreen_to_loginScreen"
+            app:destination="@id/loginScreen" />
+        <argument
+            android:name="Email"
+            app:argType="string" />
+        <argument
+            android:name="Password"
+            app:argType="string" />
+    </fragment>
+    <activity
+        android:id="@+id/loginScreen"
+        android:name="com.example.anfieldmusicapp.LoginScreen"
+        android:label="activity_login_screen"
+        tools:layout="@layout/activity_login_screen" />
+</navigation>
