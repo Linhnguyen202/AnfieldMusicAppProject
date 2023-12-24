@@ -70,7 +70,8 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"
+        >
         <ImageView
             android:id="@+id/btnPlayPre"
             android:layout_width="50dp"

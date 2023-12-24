@@ -1,8 +1,12 @@
 package com.example.anfieldmusicapp
 
+import android.content.BroadcastReceiver
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.ServiceConnection
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -11,6 +15,7 @@ import android.util.Log
 import android.view.View
 import android.widget.SeekBar
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -38,18 +43,11 @@ class MainActivity : AppCompatActivity() {
         var controller =findNavController(R.id.containerFragment)
         binding.bottomNavigation.setupWithNavController(controller)
         bindingPlayerView = binding.playerView
+        registerReceiver(broadcastReceiver, IntentFilter("music"))
         addEvents()
     }
 
-    override fun onPause() {
-        super.onPause()
 
-
-    }
-    override fun onStop() {
-        super.onStop()
-
-    }
     override fun onDestroy() {
         super.onDestroy()
         if(isServiceConnected){
@@ -57,6 +55,38 @@ class MainActivity : AppCompatActivity() {
             val intent : Intent = Intent(this, MediaService::class.java)
             stopService(intent)
         }
+        unregisterReceiver(broadcastReceiver)
+    }
+
+    val broadcastReceiver : BroadcastReceiver = object : BroadcastReceiver(){
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val action = intent!!.getStringExtra("action_music")
+            when (action){
+                MusicStatus.PLAY_ACTION.toString() -> {
+
+                }
+                MusicStatus.RESUME_ACTION.toString()-> {
+                    mediaService.handleActionMusic(MusicStatus.RESUME_ACTION)
+                    binding.hanleStartMusicBottom.setImageResource(R.drawable.pause_icon)
+                    bindingPlayerView.playButton.setImageResource(R.drawable.big_pause_icon)
+                }
+                MusicStatus.PAUSE_ACTION.toString() -> {
+                    mediaService.handleActionMusic(MusicStatus.PAUSE_ACTION)
+                    binding.hanleStartMusicBottom.setImageResource(R.drawable.play_icon)
+                    bindingPlayerView.playButton.setImageResource(R.drawable.big_play_icon)
+                }
+                MusicStatus.NEXT_ACTION.toString() -> {
+                    mediaService.handleActionMusic(MusicStatus.NEXT_ACTION)
+                }
+                MusicStatus.PRE_ACTION.toString() -> {
+                    mediaService.handleActionMusic(MusicStatus.PRE_ACTION)
+                }
+                else -> {
+
+                }
+            }
+        }
+
     }
 
     val serviceConnection : ServiceConnection = object : ServiceConnection {
