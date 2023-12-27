@@ -18,4 +18,7 @@ class MusicRepository () {
     suspend fun getMusic(type: String) = RetrofitInstance.api.getMusic(type)
 
     suspend fun getSearching(query: String) =RetrofitInstance.api.searchMusic(query)
+
+    suspend fun getMusicProfile(id : String) = RetrofitInstance.api.getMusicProfile(id)
+
 }

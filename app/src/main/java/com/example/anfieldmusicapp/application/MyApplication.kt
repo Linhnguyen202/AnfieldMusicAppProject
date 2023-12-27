@@ -8,7 +8,7 @@ import android.os.Build
 
 class MyApplication : Application() {
     companion object {
-        const val CHANNEL_MUSIC = "CHANNEL_MUSIC_ID"
+        const val CHANNEL_MUSIC = "CHANNEL_MUSIC_PLAYER"
     }
 
     override fun onCreate() {
@@ -24,6 +24,7 @@ class MyApplication : Application() {
                 .build()
             val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(mChannel)
+
         }
     }
 }

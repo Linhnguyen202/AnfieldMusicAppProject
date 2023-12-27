@@ -14,14 +14,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/layoutBottomMusic"
         >
+
         <fragment
             android:id="@+id/containerFragment"
-            android:layout_width="match_parent"
             android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:backgroundTint="#151521"
             app:defaultNavHost="true"
-            app:navGraph="@navigation/navigtion"
-            android:backgroundTint="#151521"/>
+            app:navGraph="@navigation/navigtion" />
     </FrameLayout>
 
     <RelativeLayout
@@ -113,6 +114,7 @@
         app:itemIconTint="@color/icon_color"
         android:visibility="visible"
         />
+
     <include layout="@layout/player_view"
         android:id="@+id/playerView"
         android:layout_width="match_parent"

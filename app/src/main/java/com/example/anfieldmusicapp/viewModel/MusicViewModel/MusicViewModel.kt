@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.anfieldmusicapp.application.MyApplication
+import com.example.anfieldmusicapp.model.MusicProfileResponse
 import com.example.anfieldmusicapp.model.MusicResponse
 import com.example.anfieldmusicapp.repositiory.MusicRepository
 import com.example.anfieldmusicapp.utils.Resource
@@ -18,6 +19,7 @@ class MusicViewModel (val app : MyApplication, val musicRepository: MusicReposit
     val favoriteMusic : MutableLiveData<Resource<MusicResponse>> = MutableLiveData()
     val searchMusic : MutableLiveData<Resource<MusicResponse>> = MutableLiveData()
 
+    val musicProfile : MutableLiveData<Resource<MusicProfileResponse>> = MutableLiveData()
     public fun getTrendingMusic() =viewModelScope.launch(Dispatchers.IO) {
         try{
             trendingMusic.postValue(Resource.Loading())
@@ -56,6 +58,17 @@ class MusicViewModel (val app : MyApplication, val musicRepository: MusicReposit
 
     }
 
+    public fun getMusicProfile(id : String) = viewModelScope.launch(Dispatchers.IO) {
+       try{
+            musicProfile.postValue(Resource.Loading())
+            val response = musicRepository.getMusicProfile(id)
+            musicProfile.postValue(handleMusicResponse(response))
+        }
+        catch (e : IOException){
+            musicProfile.postValue(Resource.Error(e.message.toString()))
+
+        }
+    }
     private fun<T>handleMusicResponse(response : Response<T>) : Resource<T> {
         if(response.isSuccessful){
             response.body()?.let {

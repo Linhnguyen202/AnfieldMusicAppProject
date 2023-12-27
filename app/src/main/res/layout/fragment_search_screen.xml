@@ -18,7 +18,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="10dp"
+            android:padding="8dp"
             android:background="@drawable/background_for_search">
             <ImageView
                 android:id="@+id/searchIcon"
@@ -39,7 +39,8 @@
                 android:hint="Nhập tên bài hát, ca sĩ, thể loại..."
                 android:textSize="14sp"
                 android:textColor="@color/white"
-                android:textColorHint="#D9D9D9"/>
+                android:textColorHint="#D9D9D9"
+                android:maxLines="1"/>
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>

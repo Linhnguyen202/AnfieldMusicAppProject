@@ -9,11 +9,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
+import com.example.anfieldmusicapp.MainActivity
 import com.example.anfieldmusicapp.R
 import com.example.anfieldmusicapp.adapter.HomeMusicAdapter
 import com.example.anfieldmusicapp.adapter.SearchAdapter
 import com.example.anfieldmusicapp.application.MyApplication
 import com.example.anfieldmusicapp.databinding.FragmentSearchScreenBinding
+import com.example.anfieldmusicapp.model.Music
 import com.example.anfieldmusicapp.repositiory.MusicRepository
 import com.example.anfieldmusicapp.utils.Resource
 import com.example.anfieldmusicapp.viewModel.MusicViewModel.MusicViewModel
@@ -53,7 +55,7 @@ class SearchScreen : Fragment() {
         repository = MusicRepository()
         viewModelFactory = MusicViewModelFactory(MyApplication(),repository)
         viewModel =  ViewModelProvider(this,viewModelFactory)[MusicViewModel::class.java]
-        searchAdapter = SearchAdapter()
+        searchAdapter = SearchAdapter(onClickMuic)
         binding.searchList.apply {
             adapter = this@SearchScreen.searchAdapter
         }
@@ -96,6 +98,11 @@ class SearchScreen : Fragment() {
     }
 
     private fun getData() {
+
+    }
+
+    private val onClickMuic : (Int,MutableList<Music>) -> Unit = { pos, data ->
+        (activity as MainActivity).startMusicFromService(pos, data)
 
     }
 

@@ -13,6 +13,7 @@ import com.example.anfieldmusicapp.model.Music
 
 class HomeMusicAdapter(val onClick : (Int,MutableList<Music>)->Unit)  : RecyclerView.Adapter<HomeMusicAdapter.MovieViewHolder>() {
     val differ = AsyncListDiffer(this,differCallback)
+
     inner class MovieViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
         val binding = HomeMusicItemBinding.bind(itemView)
         fun inject(music: Music, position: Int){
@@ -34,7 +35,9 @@ class HomeMusicAdapter(val onClick : (Int,MutableList<Music>)->Unit)  : Recycler
         holder.inject(differ.currentList[position],position)
     }
 
-
+    override fun getItemCount(): Int {
+        return differ.currentList.size
+    }
 
     companion object {
         private val differCallback = object : DiffUtil.ItemCallback<Music>(){
@@ -51,9 +54,7 @@ class HomeMusicAdapter(val onClick : (Int,MutableList<Music>)->Unit)  : Recycler
     }
 
 
-    override fun getItemCount(): Int {
-        return differ.currentList.size
-    }
+
 }
 
 

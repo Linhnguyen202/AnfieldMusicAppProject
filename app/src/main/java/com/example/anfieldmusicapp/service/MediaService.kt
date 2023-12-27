@@ -254,7 +254,7 @@ class MediaService : Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnEr
     private fun getPendingIntent(context: Context, action: MusicStatus): PendingIntent? {
         val intent = Intent(this, MyReceiver::class.java)
         intent.setAction(action.toString())
-        return PendingIntent.getBroadcast(context.applicationContext,0,intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        return PendingIntent.getBroadcast(context.applicationContext,0,intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
     }
 
 

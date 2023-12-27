@@ -27,6 +27,7 @@ import kotlinx.coroutines.withContext
 
 class LoginScreen : AppCompatActivity() {
     lateinit var binding : ActivityLoginScreenBinding
+
     lateinit var auth : FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {

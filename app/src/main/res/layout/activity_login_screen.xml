@@ -28,7 +28,6 @@
         app:layout_constraintTop_toBottomOf="@+id/app_icon"
         android:gravity="center_horizontal"
         android:layout_marginTop="20dp"
-
       />
     <TextView
         android:id="@+id/signin_tile"

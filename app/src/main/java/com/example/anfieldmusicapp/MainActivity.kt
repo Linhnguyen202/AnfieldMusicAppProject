@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var mediaService : MediaService
     private  var isServiceConnected : Boolean = false
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -43,8 +44,10 @@ class MainActivity : AppCompatActivity() {
         var controller =findNavController(R.id.containerFragment)
         binding.bottomNavigation.setupWithNavController(controller)
         bindingPlayerView = binding.playerView
-        registerReceiver(broadcastReceiver, IntentFilter("music"))
+        registerReceiver(broadcastReceiver, IntentFilter("music"),RECEIVER_NOT_EXPORTED)
         addEvents()
+        val intent : Intent = Intent(this, MediaService::class.java)
+        bindService(intent,serviceConnection, BIND_AUTO_CREATE)
     }
 
 
@@ -113,7 +116,6 @@ class MainActivity : AppCompatActivity() {
             override fun onPlaybackStateChanged(playbackState: Int) {
                 super.onPlaybackStateChanged(playbackState)
                 if(playbackState == ExoPlayer.STATE_READY){ // when song ready
-
                     // change state player
                     changeStatePlayView()
 
@@ -137,6 +139,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
     private fun changeStatePlayView(){
+
         // change view in playerView
         bindingPlayerView.songName.text =   mediaService.player!!.currentMediaItem!!.mediaMetadata.title
         bindingPlayerView.artistTitle.text = mediaService.player!!.currentMediaItem!!.mediaMetadata.artist

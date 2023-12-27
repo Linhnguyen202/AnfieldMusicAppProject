@@ -12,15 +12,18 @@ import com.example.anfieldmusicapp.databinding.HomeMusicItemBinding
 import com.example.anfieldmusicapp.databinding.SearchItemBinding
 import com.example.anfieldmusicapp.model.Music
 
-class SearchAdapter : RecyclerView.Adapter<SearchAdapter.MovieViewHolder>() {
+class SearchAdapter(val onClick : (Int,MutableList<Music>)->Unit) : RecyclerView.Adapter<SearchAdapter.MovieViewHolder>() {
     val differ = AsyncListDiffer(this,differCallback)
     inner class MovieViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
         val binding = SearchItemBinding.bind(itemView)
 
-        fun inject(music: Music){
+        fun inject(music: Music,position: Int){
             binding.searchItemTitle.text = music.name_music
             binding.searchItemArtist.text = music.name_singer
             Glide.with(itemView).load(music.image_music).into(binding.songBanner)
+            binding.searchItemCard.setOnClickListener {
+                onClick.invoke(position,differ.currentList)
+            }
         }
     }
 
@@ -30,7 +33,7 @@ class SearchAdapter : RecyclerView.Adapter<SearchAdapter.MovieViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        holder.inject(differ.currentList[position])
+        holder.inject(differ.currentList[position],position)
     }
 
 
