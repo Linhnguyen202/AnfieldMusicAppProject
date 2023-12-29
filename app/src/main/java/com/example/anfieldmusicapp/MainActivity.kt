@@ -292,4 +292,14 @@ class MainActivity : AppCompatActivity() {
         startService(intent)
         bindService(intent,serviceConnection, BIND_AUTO_CREATE)
     }
+
+
+    public fun getMv(){
+        if(mediaService.player!!.isPlaying){
+            mediaService.handleActionMusic(MusicStatus.PAUSE_ACTION)
+            bindingPlayerView.playButton.setImageResource(R.drawable.big_pause_icon)
+            binding.hanleStartMusicBottom.setImageResource(R.drawable.ic_baseline_play_arrow_24)
+
+        }
+    }
 }

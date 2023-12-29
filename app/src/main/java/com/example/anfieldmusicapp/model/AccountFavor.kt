@@ -4,12 +4,12 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class AccountFavor(
-    val _id: String?,
-    val createdAt: String?,
-    val id_music: String?,
-    val image: String?,
-    val role: Int,
-    val user_name: String?
+    val _id: String? = null,
+    val createdAt: String? = null,
+    val id_music: String? = null,
+    val image: String? = null,
+    val role: Int? = null,
+    val user_name: String? = null,
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -25,7 +25,7 @@ data class AccountFavor(
         parcel.writeString(createdAt)
         parcel.writeString(id_music)
         parcel.writeString(image)
-        parcel.writeInt(role)
+        parcel.writeInt(role!!)
         parcel.writeString(user_name)
     }
 

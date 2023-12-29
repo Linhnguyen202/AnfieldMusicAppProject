@@ -6,39 +6,32 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.anfieldmusicapp.R
-import com.example.anfieldmusicapp.databinding.HomeMusicItemBinding
 import com.example.anfieldmusicapp.databinding.PlaylistItemBinding
+import com.example.anfieldmusicapp.databinding.PlaylistSheetItemBinding
 import com.example.anfieldmusicapp.model.Music
-import com.example.anfieldmusicapp.model.Playlist
+import com.example.anfieldmusicapp.model.MusicResponse
 import com.example.anfieldmusicapp.model.PlaylistResponse
 
-class PlaylistAdapter(val onClick : (String)->Unit, val onClickDelete : (String) -> Unit, val onClickUpdate : (String) -> Unit) : RecyclerView.Adapter<PlaylistAdapter.PlaylistViewHolder>() {
+class PlaylistSheetAdapter(val onclick : (PlaylistResponse) -> Unit)  : RecyclerView.Adapter<PlaylistSheetAdapter.PlaylistSheetViewHolder>() {
     val differ = AsyncListDiffer(this,differCallback)
 
-    inner class PlaylistViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
-        val binding = PlaylistItemBinding.bind(itemView)
+    inner class PlaylistSheetViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
+        val binding = PlaylistSheetItemBinding.bind(itemView)
         fun inject(playlist: PlaylistResponse){
             binding.playlistItemTitle.text = playlist.name
             binding.itemContainer.setOnClickListener {
-                onClick.invoke(playlist.id)
-            }
-            binding.deleteBtn.setOnClickListener {
-                onClickDelete.invoke(playlist.id)
-            }
-            binding.editBtn.setOnClickListener {
-                onClickUpdate.invoke(playlist.id)
+                onclick.invoke(playlist)
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.playlist_item,parent,false)
-        return PlaylistViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistSheetViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.playlist_sheet_item,parent,false)
+        return PlaylistSheetViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: PlaylistViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PlaylistSheetViewHolder, position: Int) {
         holder.inject(differ.currentList[position])
     }
 
@@ -63,4 +56,3 @@ class PlaylistAdapter(val onClick : (String)->Unit, val onClickDelete : (String)
 
 
 }
-

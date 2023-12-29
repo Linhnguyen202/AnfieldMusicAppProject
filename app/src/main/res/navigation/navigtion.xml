@@ -20,7 +20,11 @@
         android:id="@+id/menuScreen"
         android:name="com.example.anfieldmusicapp.layout.MenuScreen"
         android:label="fragment_menu_screen"
-        tools:layout="@layout/fragment_menu_screen" />
+        tools:layout="@layout/fragment_menu_screen" >
+        <action
+            android:id="@+id/action_menuScreen_to_playlistMusicListScreen"
+            app:destination="@id/playlistMusicListScreen" />
+    </fragment>
     <fragment
         android:id="@+id/profileScreen"
         android:name="com.example.anfieldmusicapp.layout.ProfileScreen"
@@ -35,4 +39,13 @@
         android:name="com.example.anfieldmusicapp.SplashScreen"
         android:label="activity_splash_screen"
         tools:layout="@layout/activity_splash_screen" />
+    <fragment
+        android:id="@+id/playlistMusicListScreen"
+        android:name="com.example.anfieldmusicapp.layout.PlaylistMusicListScreen"
+        android:label="fragment_playlist_music_list_screen"
+        tools:layout="@layout/fragment_playlist_music_list_screen" >
+        <argument
+            android:name="Playlist"
+            app:argType="string" />
+    </fragment>
 </navigation>
