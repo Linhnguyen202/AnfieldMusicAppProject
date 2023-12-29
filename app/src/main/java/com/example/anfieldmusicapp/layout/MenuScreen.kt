@@ -96,7 +96,6 @@ class MenuScreen : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        Toast.makeText(requireContext(),"stop",Toast.LENGTH_LONG).show()
         requireContext().unregisterReceiver(broadcastReceiver)
     }
 

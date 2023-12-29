@@ -93,13 +93,17 @@ class PlaylistMusicListScreen : Fragment() {
         var musicArray : ArrayList<MusicFirebase> = ArrayList()
         reference.child(user.toString()).child(playlistId).child("music").addValueEventListener(object  : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                Log.d("hello","hello")
-                for(item  in  snapshot.children){
-                    val musicFirebase = MusicFirebase(item!!.key.toString(), item!!.getValue(Music::class.java)!!)
-                    musicArray.add(musicFirebase)
-                    adapter.differ.submitList(musicArray)
-                    Log.d("hello",musicArray.size.toString())
+                if(snapshot.hasChildren()){
+                    for(item  in  snapshot.children){
+                        val musicFirebase = MusicFirebase(item!!.key.toString(), item!!.getValue(Music::class.java)!!)
+                        musicArray.add(musicFirebase)
+                        adapter.differ.submitList(musicArray)
+                    }
                 }
+                else{
+                    adapter.differ.submitList(musicArray)
+                }
+
             }
 
             override fun onCancelled(error: DatabaseError) {
