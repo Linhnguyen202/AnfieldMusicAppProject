@@ -27,17 +27,29 @@
             android:fontFamily="@font/afacad_bold"/>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/songCard"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             app:cardCornerRadius="10dp"
             android:layout_gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="visible"
+
             >
-            <RelativeLayout
+            <ImageView
+                android:id="@+id/imageSong"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_signin"
+                android:layout_height="match_parent"
+                android:src="@drawable/bg_signin"
+                android:scaleType="centerCrop"/>
+            <RelativeLayout
+                android:id="@+id/musicContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:padding="25dp"
+                android:background="@drawable/background_shadow"
                 >
+
                 <TextView
                     android:id="@+id/numberTitle"
                     android:layout_width="wrap_content"
@@ -51,25 +63,31 @@
                     />
                 <TextView
                     android:id="@+id/songTitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="#FFFFFF"
                     android:textSize="40sp"
-                    android:layout_marginTop="18dp"
+                    android:layout_marginTop="15dp"
                     android:layout_below="@+id/numberTitle"
                     android:text="Rock Star"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:layout_marginRight="20dp"
                     android:fontFamily="@font/afacad_bold"
                     />
                 <TextView
                     android:id="@+id/artistTitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="#FFFFFF"
                     android:textSize="25sp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:layout_below="@+id/songTitle"
                     android:text="(feat.Roddy rich)"
                     android:fontFamily="@font/afacad_bold"
+                    android:ellipsize="end"
+                    android:layout_marginRight="20dp"
+                    android:maxLines="1"
                     />
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
@@ -77,12 +95,13 @@
                     app:cardCornerRadius="10dp"
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/artistTitle"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="18dp"
                     >
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/playBtn"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:padding="12dp"
+                        android:padding="15dp"
                         android:background="@drawable/gradient_background"
                         >
                         <ImageView
@@ -100,7 +119,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:textColor="#FFFFFF"
-                            android:textSize="20sp"
+                            android:textSize="22sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/iconPlay"
@@ -112,6 +131,7 @@
                 </androidx.cardview.widget.CardView>
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -126,7 +126,7 @@ class PlaylistSheet : BottomSheetDialogFragment() {
         val dataPlaylist = LinkedHashMap<String,Music>()
         dataPlaylist[musicData!!._id.toString()] = musicData
         val playlistData = Playlist(playlist.name,dataPlaylist)
-        reference.child(user.toString()).child(playlist.id.toString()).child("music").push().setValue(musicData).addOnCompleteListener {
+        reference.child(user.toString()).child(playlist.id.toString()).child("music").child(musicData._id.toString()).setValue(musicData).addOnCompleteListener {
             if(it.isSuccessful){
                 Snackbar.make(getDialog()?.getWindow()!!.getDecorView(),"Add playlist Successfully",
                     Snackbar.LENGTH_SHORT).show()

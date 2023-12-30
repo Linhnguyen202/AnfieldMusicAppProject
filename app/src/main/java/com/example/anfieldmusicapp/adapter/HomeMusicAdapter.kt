@@ -11,10 +11,10 @@ import com.example.anfieldmusicapp.R
 import com.example.anfieldmusicapp.databinding.HomeMusicItemBinding
 import com.example.anfieldmusicapp.model.Music
 
-class HomeMusicAdapter(val onClick : (Int,MutableList<Music>)->Unit)  : RecyclerView.Adapter<HomeMusicAdapter.MovieViewHolder>() {
+class HomeMusicAdapter(val onClick : (Int,MutableList<Music>)->Unit)  : RecyclerView.Adapter<HomeMusicAdapter.HomeMusicViewHolder>() {
     val differ = AsyncListDiffer(this,differCallback)
 
-    inner class MovieViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
+    inner class HomeMusicViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
         val binding = HomeMusicItemBinding.bind(itemView)
         fun inject(music: Music, position: Int){
            binding.songTitle.text = music.name_music
@@ -26,12 +26,12 @@ class HomeMusicAdapter(val onClick : (Int,MutableList<Music>)->Unit)  : Recycler
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeMusicViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.home_music_item,parent,false)
-        return MovieViewHolder(view)
+        return HomeMusicViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: HomeMusicViewHolder, position: Int) {
         holder.inject(differ.currentList[position],position)
     }
 

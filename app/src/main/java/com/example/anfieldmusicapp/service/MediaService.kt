@@ -25,6 +25,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.net.toUri
 import com.bumptech.glide.Glide
+import com.example.anfieldmusicapp.MainActivity
 import com.example.anfieldmusicapp.R
 import com.example.anfieldmusicapp.application.MyApplication
 import com.example.anfieldmusicapp.broadcast.MyReceiver
@@ -35,6 +36,7 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.MediaMetadata
 import com.google.android.play.integrity.internal.c
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.IOException
@@ -196,12 +198,17 @@ class MediaService : Service(), MediaPlayer.OnPreparedListener, MediaPlayer.OnEr
 
     @SuppressLint("SuspiciousIndentation")
     private fun sendNotification() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
         val mediaSession : MediaSessionCompat = MediaSessionCompat(this,"tag")
         val notificationBuilder : NotificationCompat.Builder = NotificationCompat.Builder(this,
             MyApplication.CHANNEL_MUSIC)
             .setSmallIcon(R.drawable.ic_baseline_audiotrack_24)
             .setContentTitle(player!!.mediaMetadata.title)
             .setContentText(player!!.mediaMetadata.artist)
+            .setContentIntent(PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE))
             .setStyle(androidx.media.app.NotificationCompat.MediaStyle().setShowActionsInCompactView(1).setMediaSession(mediaSession.sessionToken))
             .setSound(null)
             .setStyle(androidx.media.app.NotificationCompat.MediaStyle()

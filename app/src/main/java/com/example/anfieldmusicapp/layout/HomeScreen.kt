@@ -1,6 +1,5 @@
 package com.example.anfieldmusicapp.layout
 
-import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,8 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.example.anfieldmusicapp.MainActivity
-import com.example.anfieldmusicapp.R
 import com.example.anfieldmusicapp.adapter.HomeMusicAdapter
 import com.example.anfieldmusicapp.application.MyApplication
 import com.example.anfieldmusicapp.databinding.FragmentHomeScreenBinding
@@ -28,6 +27,7 @@ class HomeScreen : Fragment() {
     lateinit var topFavorAdapter: HomeMusicAdapter
     lateinit var viewModel: MusicViewModel
     lateinit var repository : MusicRepository
+    val musicListBig : MutableList<Music> = mutableListOf()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -56,9 +56,19 @@ class HomeScreen : Fragment() {
         binding.trendingList.apply {
             adapter = this@HomeScreen.trendingAdapter
         }
+
         binding.topFavorList.apply {
             adapter = this@HomeScreen.topFavorAdapter
         }
+    }
+    private fun addMusicBig() {
+        binding.songTitle.text = musicListBig[0].name_music
+        binding.artistTitle.text = musicListBig[0].name_singer
+        Glide.with(this).load(musicListBig[0].image_music).into(binding.imageSong)
+        binding.playBtn.setOnClickListener {
+            onClickMuic(0,musicListBig)
+        }
+        binding.songCard.visibility = View.VISIBLE
     }
     private fun getData() {
         viewModel.getTrendingMusic()
@@ -70,14 +80,15 @@ class HomeScreen : Fragment() {
                 is Resource.Success -> {
                     it.data?.let { MusicResponse ->
                         trendingAdapter.differ.submitList(MusicResponse.data.toList())
-                       Log.d("music",MusicResponse.data.toString())
+                        musicListBig.addAll(MusicResponse.data.toList())
+                        addMusicBig()
                     }
                 }
                 is Resource.Error -> {
                     Toast.makeText(requireContext(),it.message, Toast.LENGTH_LONG).show()
                 }
                 is Resource.Loading -> {
-                    Toast.makeText(requireContext(),"Loading", Toast.LENGTH_LONG).show()
+
                 }
 
             }
@@ -94,12 +105,15 @@ class HomeScreen : Fragment() {
                     Toast.makeText(requireContext(),it.message, Toast.LENGTH_LONG).show()
                 }
                 is Resource.Loading -> {
-                    Toast.makeText(requireContext(),"Loading", Toast.LENGTH_LONG).show()
+
                 }
 
             }
         }
     }
+
+
+
     private val onClickMuic : (Int,MutableList<Music>) -> Unit = { pos, data ->
         (activity as MainActivity).startMusicFromService(pos, data)
 

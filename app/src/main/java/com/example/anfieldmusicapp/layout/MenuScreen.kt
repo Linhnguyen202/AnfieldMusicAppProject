@@ -42,25 +42,23 @@ class MenuScreen : Fragment() {
     val user by lazy {
         sharePreferenceUtils.getUser(requireContext()).id
     }
-    val broadcastReceiver : BroadcastReceiver = object : BroadcastReceiver(){
-        override fun onReceive(context: Context?, intent: Intent?) {
-            getData()
-        }
-    }
+    lateinit var broadcastReceiver : BroadcastReceiver
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentMenuScreenBinding.inflate(layoutInflater)
+        setUpBroadCast()
+        requireContext().registerReceiver(broadcastReceiver, IntentFilter("UPDATE_ACTION"),
+            Context.RECEIVER_NOT_EXPORTED)
         return binding.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireContext().registerReceiver(broadcastReceiver, IntentFilter("UPDATE_ACTION"),
-            Context.RECEIVER_NOT_EXPORTED)
         db = FirebaseDatabase.getInstance()
         reference = db.getReference("Playlist")
         adapter = PlaylistAdapter(onClick,onClickDelete,onClickUpdate)
@@ -91,14 +89,23 @@ class MenuScreen : Fragment() {
         })
 
     }
-
-
-
-    override fun onStop() {
-        super.onStop()
-        requireContext().unregisterReceiver(broadcastReceiver)
+    private fun setUpBroadCast(){
+        broadcastReceiver = object : BroadcastReceiver(){
+            override fun onReceive(context: Context?, intent: Intent?) {
+                getData()
+            }
+        }
     }
 
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        requireContext().unregisterReceiver(broadcastReceiver)
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+
+    }
 
     private fun getData() {
         var playlistArray : ArrayList<PlaylistResponse> = ArrayList()

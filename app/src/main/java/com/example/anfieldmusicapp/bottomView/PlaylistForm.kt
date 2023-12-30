@@ -85,6 +85,13 @@ class PlaylistForm : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if(tag == "ADD_FORM"){
+            binding.playListEdt.hint = "Add your new playlist"
+        }
+        else if(tag == "UPDATE_FORM"){
+            binding.playListEdt.hint = "Update your playlist"
+        }
+
         db = FirebaseDatabase.getInstance()
         reference = db.getReference("Playlist")
 
