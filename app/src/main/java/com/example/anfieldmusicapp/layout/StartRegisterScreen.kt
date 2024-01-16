@@ -25,16 +25,17 @@ import kotlinx.coroutines.withContext
 
 
 class StartRegisterScreen : Fragment() {
-
     lateinit var binding : FragmentStartRegisterScreenBinding
+
     val auth by lazy {
-        (activity as RegisterScreen).auth
+        (activity as RegisterScreen).auth // lấy biến auth cua tk cha registerScreen
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
+
         binding = FragmentStartRegisterScreenBinding.inflate(layoutInflater)
         return binding.root
 
@@ -46,19 +47,26 @@ class StartRegisterScreen : Fragment() {
     }
 
     private fun addEvents() {
+
+        // submit đăng kí
         binding.submitBtn.setOnClickListener {
-            registerUser()
+            registerUser() // hàm đăng kí
         }
+
+        // hàm chuyển về trang đăng nhập
         binding.signInTitle.setOnClickListener {
             findNavController().navigate(R.id.action_startRegisterScreen_to_loginScreen)
         }
+
+        // kiểm tra ô email text có đang thay đổi không
         binding.emailEditText.setOnFocusChangeListener { view, b ->
             if(view.isFocused){
-                binding.emailContainer.error = ""
-                binding.emailContainer.isErrorEnabled = false
+                binding.emailContainer.error = "" // cho error bằng chuỗi rỗng
+                binding.emailContainer.isErrorEnabled = false // tắt error
             }
 
         }
+        // kiểm tra ô password text có đang thay đổi không
         binding.passEditText.setOnFocusChangeListener { view, b ->
             if(view.isFocused){
                 binding.passContainer.error = ""
@@ -67,6 +75,7 @@ class StartRegisterScreen : Fragment() {
 
         }
 
+        // kiểm tra ô confirm password text có đang thay đổi không
         binding.confirmPassEditText.setOnFocusChangeListener { view, b ->
             if(view.isFocused){
                 binding.confirmPassContainer.error = ""
@@ -75,22 +84,31 @@ class StartRegisterScreen : Fragment() {
 
         }
     }
+
+
     private fun validateEmail() : Boolean{
-        val email = binding.emailEditText.text.toString()
-        var error : String? = null
-        if(email.isNullOrEmpty()){
+        val email = binding.emailEditText.text.toString() // lất dữ liệu text của email Edittext
+
+        var error : String? = null // THonng báo lỗi
+
+        // kiểm tra email
+        if(email.isNullOrEmpty()){ // kiểm tra email rỗng
             error = "Email is required"
         }
-        else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){ // kiểm tra định dạng
             error = "Email is not valid"
         }
+
+        // kiểm tra thông báo lỗi (error) có null
         if(error != null){
             binding.emailContainer.error = error
             binding.emailContainer.isErrorEnabled = true
 
         }
-        return error != null
+
+        return error == null
     }
+
     private fun validatePass() : Boolean{
         val pass = binding.passEditText.text.toString()
         var error : String? = null
@@ -105,36 +123,33 @@ class StartRegisterScreen : Fragment() {
             binding.passContainer.isErrorEnabled = true
 
         }
-        return error != null
+        return error == null
     }
 
     private fun validateConfirmPass() : Boolean{
         val pass = binding.passEditText.text.toString()
         val confirmPass = binding.confirmPassEditText.text.toString()
+
         var error : String? = null
+
         if(pass.isNullOrEmpty()){
             error = "Confirm Password is required"
         }
 //        else if(confirmPass.equals(pass)){
 //            error = "Confirm Password is not same Password"
 //        }
+
         if(error != null){
             binding.confirmPassContainer.error = error
             binding.confirmPassContainer.isErrorEnabled = true
 
         }
-        return error != null
-    }
-    private fun validate() : Boolean{
-        var validateValue = false
-        if(validateEmail()) validateValue = true
-        if(validatePass()) validateValue = true
-        if(validateConfirmPass()) validateValue = true
-        return validateValue
 
+        return error == null
     }
+
     private fun registerUser(){
-        if(!validate()){
+        if(validateEmail() && validatePass() && validateConfirmPass()){
            val email = binding.emailEditText.text.toString()
             val pass = binding.passEditText.text.toString()
             val bundle = bundleOf(

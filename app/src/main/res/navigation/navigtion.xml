@@ -33,6 +33,9 @@
         <action
             android:id="@+id/action_profileScreen_to_splashScreen"
             app:destination="@id/splashScreen" />
+        <action
+            android:id="@+id/action_profileScreen_to_editUserProfileScreen"
+            app:destination="@id/editUserProfileScreen" />
     </fragment>
     <activity
         android:id="@+id/splashScreen"
@@ -48,4 +51,9 @@
             android:name="Playlist"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/editUserProfileScreen"
+        android:name="com.example.anfieldmusicapp.layout.EditUserProfileScreen"
+        android:label="fragment_edit_user_profile_screen"
+        tools:layout="@layout/fragment_edit_user_profile_screen" />
 </navigation>

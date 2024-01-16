@@ -10,9 +10,11 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.anfieldmusicapp.MainActivity
 import com.example.anfieldmusicapp.R
+import com.example.anfieldmusicapp.application.MyApplication
 import com.example.anfieldmusicapp.databinding.FragmentProfileScreenBinding
 import com.example.anfieldmusicapp.service.MediaService
 import com.example.anfieldmusicapp.share.sharePreferenceUtils
+import com.google.firebase.auth.FirebaseAuth
 
 
 class ProfileScreen : Fragment() {
@@ -25,18 +27,19 @@ class ProfileScreen : Fragment() {
         binding = FragmentProfileScreenBinding.inflate(layoutInflater)
         return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         addData()
         binding.logoutBtn.setOnClickListener {
             sharePreferenceUtils.removeUser(requireContext())
              (activity as MainActivity).finish()
-//            (activity as MainActivity).unbindService((activity as MainActivity).serviceConnection)
-//            val intent : Intent = Intent(requireContext(), MediaService::class.java)
-//            (activity as MainActivity).stopService(intent)
+            (activity as MainActivity).auth.signOut()
             findNavController().navigate(R.id.action_profileScreen_to_splashScreen)
         }
+        binding.profleBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_profileScreen_to_editUserProfileScreen)
+        }
+
     }
 
     private fun addData() {

@@ -22,17 +22,24 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 class RegisterScreen : AppCompatActivity() {
-    lateinit var binding : ActivityRegisterScreenBinding
-    lateinit var auth : FirebaseAuth
-    lateinit var db : FirebaseDatabase
-    lateinit var reference : DatabaseReference
+    lateinit var binding : ActivityRegisterScreenBinding // view binding
+
+    lateinit var auth : FirebaseAuth // authentication
+    lateinit var db : FirebaseDatabase // realtime db
+    lateinit var reference : DatabaseReference // link api /https://anfieldauth-default-rtdb.firebaseio.com/
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // add binding vào view của activity
         binding = ActivityRegisterScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        // Khởi tạo
         auth = FirebaseAuth.getInstance()
         db = FirebaseDatabase.getInstance()
-        reference = db.getReference("User")
+        reference = db.getReference("User") // https://anfieldauth-default-rtdb.firebaseio.com/User
 //        addEvents()
 
     }

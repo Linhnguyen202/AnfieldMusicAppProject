@@ -8,6 +8,7 @@ import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.widget.Toast
+import com.example.anfieldmusicapp.application.MyApplication
 import com.example.anfieldmusicapp.databinding.ActivityLoginScreenBinding
 import com.example.anfieldmusicapp.model.User
 import com.example.anfieldmusicapp.share.sharePreferenceUtils
@@ -28,7 +29,9 @@ import kotlinx.coroutines.withContext
 class LoginScreen : AppCompatActivity() {
     lateinit var binding : ActivityLoginScreenBinding
 
-    lateinit var auth : FirebaseAuth
+    val auth : FirebaseAuth by lazy {
+        (application as MyApplication).auth
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,8 +39,7 @@ class LoginScreen : AppCompatActivity() {
         setContentView(binding.root)
 
         val user = sharePreferenceUtils.isSharedPreferencesExist(this,"USER","USER_VALUE")
-        Log.d("user",user.toString())
-        auth = FirebaseAuth.getInstance()
+
         addEvents()
 
     }
@@ -115,6 +117,7 @@ class LoginScreen : AppCompatActivity() {
                         binding.progessBar.visibility = View.VISIBLE
                         binding.signInTitle.visibility = View.GONE
                     }
+
                     auth.signInWithEmailAndPassword(email,pass).addOnCompleteListener {
                         if(it.isSuccessful){
                             binding.progessBar.visibility = View.GONE

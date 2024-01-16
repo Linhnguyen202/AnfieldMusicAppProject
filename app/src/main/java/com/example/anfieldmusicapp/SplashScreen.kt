@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import com.example.anfieldmusicapp.application.MyApplication
 import com.example.anfieldmusicapp.databinding.ActivitySplashScreenBinding
 import com.example.anfieldmusicapp.share.sharePreferenceUtils
 
@@ -16,7 +17,7 @@ class SplashScreen : AppCompatActivity() {
         binding = ActivitySplashScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
         Handler(Looper.myLooper()!!).postDelayed({
-            if(sharePreferenceUtils.isSharedPreferencesExist(this,"USER","USER_VALUE")){
+            if(!(application as MyApplication).auth.currentUser.toString().isNullOrEmpty() && sharePreferenceUtils.isSharedPreferencesExist(this,"USER","USER_VALUE")){
                 startActivity(Intent(this,MainActivity::class.java))
             }
             else{

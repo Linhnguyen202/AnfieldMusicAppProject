@@ -11,7 +11,19 @@ buildscript {
 
 
     }
+
+
 }
+buildscript {
+    allprojects {
+        repositories {
+            maven { url 'https://jitpack.io' }
+        }
+    }
+}
+
+
+
 
 plugins {
     id 'com.android.application' version '7.4.2' apply false

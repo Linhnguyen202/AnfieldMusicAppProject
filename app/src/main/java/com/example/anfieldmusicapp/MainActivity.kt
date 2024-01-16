@@ -20,6 +20,7 @@ import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
+import com.example.anfieldmusicapp.application.MyApplication
 import com.example.anfieldmusicapp.bottomView.MusicSettingSheet
 import com.example.anfieldmusicapp.databinding.ActivityMainBinding
 import com.example.anfieldmusicapp.databinding.PlayerViewBinding
@@ -29,6 +30,7 @@ import com.example.anfieldmusicapp.utils.MusicStatus
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding : ActivityMainBinding
@@ -36,6 +38,9 @@ class MainActivity : AppCompatActivity() {
     lateinit var mediaService : MediaService
     private  var isServiceConnected : Boolean = false
 
+    public val auth : FirebaseAuth by lazy {
+        (application as MyApplication).auth
+    }
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

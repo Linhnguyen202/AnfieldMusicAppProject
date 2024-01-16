@@ -8,9 +8,9 @@ import com.google.firebase.database.IgnoreExtraProperties
 data class Music(
     val __v: Int? = null,
     val _id: String?  = null,
-    val category: String?  = null,
-    val createdAt: String?  = null,
-    val favorite: Double?  = null,
+//    val category: String?  = null,
+//    val createdAt: String?  = null,
+//    val favorite: Double?  = null,
     val account_favorite: List<AccountFavor>?  = null,
     val id_account: String?  = null,
     val image_music: String?  = null,
@@ -33,9 +33,9 @@ data class Music(
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readDouble(),
+//        parcel.readString(),
+//        parcel.readString(),
+//        parcel.readDouble(),
         arrayListOf<AccountFavor>().apply {
             parcel.readList(this, AccountFavor::class.java.classLoader)
         },
@@ -60,9 +60,9 @@ data class Music(
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(__v?:1)
         parcel.writeString(_id)
-        parcel.writeString(category)
-        parcel.writeString(createdAt)
-        parcel.writeDouble(favorite!!)
+//        parcel.writeString(category)
+//        parcel.writeString(createdAt)
+//        parcel.writeDouble(favorite!!)
         arrayListOf<AccountFavor>().apply {
             parcel.writeList(this)
         }

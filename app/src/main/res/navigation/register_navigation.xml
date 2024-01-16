@@ -17,6 +17,7 @@
             android:id="@+id/action_startRegisterScreen_to_loginScreen"
             app:destination="@id/loginScreen" />
     </fragment>
+
     <fragment
         android:id="@+id/endRegisterScreen"
         android:name="com.example.anfieldmusicapp.layout.EndRegisterScreen"
@@ -32,6 +33,7 @@
             android:name="Password"
             app:argType="string" />
     </fragment>
+
     <activity
         android:id="@+id/loginScreen"
         android:name="com.example.anfieldmusicapp.LoginScreen"

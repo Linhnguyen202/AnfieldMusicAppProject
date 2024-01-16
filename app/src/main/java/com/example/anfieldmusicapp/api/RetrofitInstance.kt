@@ -1,6 +1,8 @@
 package com.example.anfieldmusicapp.api
 
+import com.example.anfieldmusicapp.application.MyApplication
 import com.example.anfieldmusicapp.utils.Constants.Companion.BASE_URL
+import com.example.anfieldmusicapp.utils.NetworkConnectionInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -10,6 +12,8 @@ class RetrofitInstance {
     companion object {
         private val retrofit by lazy {
             val logging = HttpLoggingInterceptor()
+//            val networkConnectionInterceptor: NetworkConnectionInterceptor =
+//                NetworkConnectionInterceptor()
             logging.setLevel(HttpLoggingInterceptor.Level.BODY)
             val client = OkHttpClient.Builder()
                 .addInterceptor(logging)

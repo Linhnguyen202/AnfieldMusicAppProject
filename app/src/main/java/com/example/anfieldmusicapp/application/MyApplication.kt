@@ -5,15 +5,17 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.media.AudioAttributes
 import android.os.Build
+import com.google.firebase.auth.FirebaseAuth
 
 class MyApplication : Application() {
     companion object {
         const val CHANNEL_MUSIC = "CHANNEL_MUSIC_PLAYER"
     }
-
+    public lateinit var auth : FirebaseAuth
     override fun onCreate() {
         super.onCreate()
         createNotificationChanel()
+        auth = FirebaseAuth.getInstance()
     }
     private fun createNotificationChanel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -27,4 +29,5 @@ class MyApplication : Application() {
 
         }
     }
+
 }

@@ -27,14 +27,18 @@ import kotlinx.coroutines.withContext
 
 class EndRegisterScreen : Fragment() {
    lateinit var binding : FragmentEndRegisterScreenBinding
-    val args : EndRegisterScreenArgs by navArgs()
+
+    val args : EndRegisterScreenArgs by navArgs() // lấy cái bundle
+
    val auth by lazy {
        (activity as RegisterScreen).auth
    }
     val reference by lazy {
         (activity as RegisterScreen).reference
     }
-    var imageProfile : Uri? = null
+
+    var imageProfile : Uri? = null // link ảnh
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -59,7 +63,7 @@ class EndRegisterScreen : Fragment() {
             binding.usernameContainer.isErrorEnabled = true
 
         }
-        return error != null
+        return error == null
     }
 
     private fun addEvents() {
@@ -72,12 +76,16 @@ class EndRegisterScreen : Fragment() {
         }
 
 
+
+        // đăng kí tài khoản
         binding.signUpBtn.setOnClickListener {
             onSubmit()
         }
+        // chuyển về trang đang nhập
         binding.signInTitle.setOnClickListener {
             findNavController().navigate(R.id.action_endRegisterScreen_to_loginScreen)
         }
+
         binding.usernameEditText.setOnFocusChangeListener { view, b ->
             if(view.isFocused){
                 binding.usernameContainer.error = ""
@@ -93,28 +101,38 @@ class EndRegisterScreen : Fragment() {
 
     }
     private fun onSubmit() {
-        if(!validate()){
+        if(validateUsername()){
             val email = args.Email
             val pass = args.Password
             val username = binding.usernameEditText.text
+
+            // tạo profile
             val profileUser = UserProfileChangeRequest.Builder()
-                .setDisplayName(username.toString())
-                .setPhotoUri(imageProfile)
+                .setDisplayName(username.toString()) // tên
+                .setPhotoUri(imageProfile) // ảnh
                 .build()
-            CoroutineScope(Dispatchers.IO).launch {
+
+            CoroutineScope(Dispatchers.IO).launch { // thread(luồng) background để đẩy dữ lieeuj đi
                 try{
-                    withContext(Dispatchers.Main){
+                    withContext(Dispatchers.Main){// đổi luồng thread sang main
                         binding.progessBar.visibility = View.VISIBLE
                         binding.signupTitle.visibility = View.GONE
                     }
-                    auth.createUserWithEmailAndPassword(email,pass).await()
+                    // quay lại thread IO background
+                    auth.createUserWithEmailAndPassword(email,pass).await() // hàm đăng kí tài khoản
+                    // đăng kí xong nó gán tài khoàn mới vào auth
                     withContext(Dispatchers.Main){
+                        // kiểm tra auth có rỗng hay không
                         if(auth.currentUser != null){
                             withContext(Dispatchers.IO){
-                                auth.currentUser!!.updateProfile(profileUser).await()
+                                // cập nhật tài khoản trong authentication
+                                auth.currentUser!!.updateProfile(profileUser).await() // cập nhật ảnh với tên
                                 withContext(Dispatchers.Main){
+                                    // save người dùng vào realtime database
+                                    // lâấy ta thông tin nguowi dùng ở auth với id , username , image
                                 val user = User(auth.currentUser!!.uid,auth.currentUser!!.displayName.toString(),auth.currentUser!!.email.toString(),auth.currentUser!!.photoUrl.toString())
-                                saveUser(user)
+                                // lưu thông tin đấy vào realtime db
+                                    saveUser(user)
                                 }
                             }
                         }
@@ -138,8 +156,8 @@ class EndRegisterScreen : Fragment() {
         binding.imageProfile.setImageURI(imageProfile)
     }
       suspend fun saveUser(user: User){
-          withContext(Dispatchers.IO){
-              reference.child(user.id!!).setValue(user).addOnCompleteListener {
+          withContext(Dispatchers.IO){ // link/user/id
+              reference.child(user.id!!).setValue(user).addOnCompleteListener { // lưu vào realtime database
                   if(it.isSuccessful){
                       Toast.makeText(requireContext(),"Register Successfully",Toast.LENGTH_LONG).show()
                       findNavController().navigate(R.id.action_endRegisterScreen_to_loginScreen)
