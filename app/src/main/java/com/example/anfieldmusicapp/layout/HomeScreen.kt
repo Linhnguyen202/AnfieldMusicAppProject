@@ -15,6 +15,7 @@ import com.example.anfieldmusicapp.application.MyApplication
 import com.example.anfieldmusicapp.databinding.FragmentHomeScreenBinding
 import com.example.anfieldmusicapp.model.Music
 import com.example.anfieldmusicapp.repositiory.MusicRepository
+import com.example.anfieldmusicapp.utils.NetworkConnection
 import com.example.anfieldmusicapp.utils.Resource
 import com.example.anfieldmusicapp.viewModel.MusicViewModel.MusicViewModel
 import com.example.anfieldmusicapp.viewModel.MusicViewModel.MusicViewModelFactory
@@ -28,6 +29,10 @@ class HomeScreen : Fragment() {
     lateinit var viewModel: MusicViewModel
     lateinit var repository : MusicRepository
     val musicListBig : MutableList<Music> = mutableListOf()
+
+    private val networkConnection: NetworkConnection by lazy {
+        NetworkConnection(requireContext())
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -40,15 +45,11 @@ class HomeScreen : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUp()
-        getData()
         observerData()
     }
 
-
-
-
     private fun setUp() {
-        repository = MusicRepository()
+        repository = MusicRepository(requireContext())
         viewModelFactory = MusicViewModelFactory(MyApplication(),repository)
         viewModel =  ViewModelProvider(this,viewModelFactory)[MusicViewModel::class.java]
         trendingAdapter = HomeMusicAdapter(onClickMuic)
@@ -75,6 +76,13 @@ class HomeScreen : Fragment() {
         viewModel.getTopFavor()
     }
     private fun observerData() {
+        networkConnection.observe(viewLifecycleOwner) { isConnected ->
+            if (isConnected) {
+                if(topFavorAdapter.differ.currentList.size <= 0 || trendingAdapter.differ.currentList.size <= 0){
+                    getData()
+                }
+            }
+        }
         viewModel.trendingMusic.observe(viewLifecycleOwner){
             when(it){
                 is Resource.Success -> {
@@ -85,7 +93,6 @@ class HomeScreen : Fragment() {
                     }
                 }
                 is Resource.Error -> {
-                    Toast.makeText(requireContext(),it.message, Toast.LENGTH_LONG).show()
                 }
                 is Resource.Loading -> {
 
@@ -98,11 +105,9 @@ class HomeScreen : Fragment() {
                 is Resource.Success -> {
                     it.data?.let { MusicResponse ->
                         topFavorAdapter.differ.submitList(MusicResponse.data.toList())
-                        Log.d("music",MusicResponse.data.toString())
                     }
                 }
                 is Resource.Error -> {
-                    Toast.makeText(requireContext(),it.message, Toast.LENGTH_LONG).show()
                 }
                 is Resource.Loading -> {
 

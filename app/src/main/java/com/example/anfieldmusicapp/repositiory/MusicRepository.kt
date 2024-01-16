@@ -1,5 +1,6 @@
 package com.example.anfieldmusicapp.repositiory
 
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,11 +15,11 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
 
-class MusicRepository () {
-    suspend fun getMusic(type: String) = RetrofitInstance.api.getMusic(type)
+class MusicRepository (val context : Context) {
+    suspend fun getMusic(type: String) = RetrofitInstance.newInstance(context).getMusic(type)
 
-    suspend fun getSearching(query: String) =RetrofitInstance.api.searchMusic(query)
+    suspend fun getSearching(query: String) =RetrofitInstance.newInstance(context).searchMusic(query)
 
-    suspend fun getMusicProfile(id : String) = RetrofitInstance.api.getMusicProfile(id)
+    suspend fun getMusicProfile(id : String) = RetrofitInstance.newInstance(context).getMusicProfile(id)
 
 }

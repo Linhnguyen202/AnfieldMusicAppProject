@@ -43,7 +43,7 @@ class MusicSettingSheet : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        repository = MusicRepository()
+        repository = MusicRepository(requireContext())
         viewModelFactory = MusicViewModelFactory(MyApplication(),repository)
         viewModel =  ViewModelProvider(this,viewModelFactory)[MusicViewModel::class.java]
         getData()

@@ -27,6 +27,7 @@ import com.example.anfieldmusicapp.databinding.PlayerViewBinding
 import com.example.anfieldmusicapp.model.Music
 import com.example.anfieldmusicapp.service.MediaService
 import com.example.anfieldmusicapp.utils.MusicStatus
+import com.example.anfieldmusicapp.utils.NetworkConnection
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
@@ -41,6 +42,9 @@ class MainActivity : AppCompatActivity() {
     public val auth : FirebaseAuth by lazy {
         (application as MyApplication).auth
     }
+    private val networkConnection: NetworkConnection by lazy {
+        NetworkConnection(this)
+    }
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +57,14 @@ class MainActivity : AppCompatActivity() {
         addEvents()
         val intent : Intent = Intent(this, MediaService::class.java)
         bindService(intent,serviceConnection, BIND_AUTO_CREATE)
+
+        networkConnection.observe(this) { isConnected ->
+            if (isConnected) {
+                binding.internetWrapper.visibility = View.GONE
+            } else {
+                binding.internetWrapper.visibility = View.VISIBLE
+            }
+        }
     }
 
 

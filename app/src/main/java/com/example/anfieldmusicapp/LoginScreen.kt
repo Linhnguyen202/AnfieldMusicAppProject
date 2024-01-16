@@ -14,12 +14,14 @@ import com.example.anfieldmusicapp.model.User
 import com.example.anfieldmusicapp.share.sharePreferenceUtils
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.internal.api.FirebaseNoSignedInUserException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -130,8 +132,21 @@ class LoginScreen : AppCompatActivity() {
                                 finish()
                             }
                         }
-
-                    }.await()
+                    }
+                }
+                catch (e : FirebaseNoSignedInUserException){
+                    withContext(Dispatchers.Main){
+                        binding.progessBar.visibility = View.GONE
+                        binding.signInTitle.visibility = View.VISIBLE
+                        Toast.makeText(this@LoginScreen,"User not exits",Toast.LENGTH_LONG).show()
+                    }
+                }
+                catch (e : FirebaseNetworkException){
+                    withContext(Dispatchers.Main){
+                        binding.progessBar.visibility = View.GONE
+                        binding.signInTitle.visibility = View.VISIBLE
+                        Toast.makeText(this@LoginScreen,"Internet Disconnected",Toast.LENGTH_LONG).show()
+                    }
                 }
                 catch (e : FirebaseAuthInvalidCredentialsException){
                     withContext(Dispatchers.Main){

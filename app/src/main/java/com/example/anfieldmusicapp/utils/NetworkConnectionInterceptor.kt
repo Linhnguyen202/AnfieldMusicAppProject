@@ -7,8 +7,8 @@ import com.example.anfieldmusicapp.exception.NoInternetException
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class NetworkConnectionInterceptor () : Interceptor {
-    private val applicationContext = MyApplication().applicationContext
+class NetworkConnectionInterceptor (context : Context) : Interceptor {
+    private val applicationContext = context.applicationContext
     override fun intercept(chain: Interceptor.Chain): Response {
         if(!isInternetAvailable()){
             throw NoInternetException("No internet connection")

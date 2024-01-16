@@ -52,7 +52,7 @@ class SearchScreen : Fragment() {
 
 
     private fun setUp() {
-        repository = MusicRepository()
+        repository = MusicRepository(requireContext())
         viewModelFactory = MusicViewModelFactory(MyApplication(),repository)
         viewModel =  ViewModelProvider(this,viewModelFactory)[MusicViewModel::class.java]
         searchAdapter = SearchAdapter(onClickMuic)

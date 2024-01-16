@@ -106,7 +106,7 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/internetWrapper"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         app:menu="@menu/menu"
@@ -117,7 +117,20 @@
         />
 
 
-
+    <RelativeLayout
+        android:id="@+id/internetWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"
+        android:paddingVertical="4dp">
+        <TextView
+            android:textColor="@color/white"
+            android:text="App is offline"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
     <include layout="@layout/player_view"
         android:id="@+id/playerView"
         android:layout_width="match_parent"
