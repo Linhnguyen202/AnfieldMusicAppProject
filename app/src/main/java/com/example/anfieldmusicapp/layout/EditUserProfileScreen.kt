@@ -18,6 +18,7 @@ import com.example.anfieldmusicapp.share.sharePreferenceUtils
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Firebase
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.database.DatabaseReference
@@ -92,17 +93,25 @@ class EditUserProfileScreen : Fragment() {
           }
     }
 
-    private fun saveUser(user: User) {
+    private suspend fun saveUser(user: User) {
         val updates = hashMapOf<String, Any>(
            user.id.toString() to user
         )
-        reference.updateChildren(updates).addOnCompleteListener {
-            if(it.isSuccessful){
-                Snackbar.make(this@EditUserProfileScreen.myView,"Update user Successfully",
-                    Snackbar.LENGTH_SHORT).show()
-                sharePreferenceUtils.saveUser(user,requireContext())
+        try{
+            reference.updateChildren(updates).addOnCompleteListener {
+                if(it.isSuccessful){
+                    Snackbar.make(this@EditUserProfileScreen.myView,"Update user Successfully",
+                        Snackbar.LENGTH_SHORT).show()
+                    sharePreferenceUtils.saveUser(user,requireContext())
+                }
+            }.await()
+        }
+        catch (e : FirebaseNetworkException){
+            withContext(Dispatchers.Main){
+                Toast.makeText(requireContext(),"Internet Disconnected",Toast.LENGTH_LONG).show()
             }
         }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
