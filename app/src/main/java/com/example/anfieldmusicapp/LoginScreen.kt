@@ -134,13 +134,6 @@ class LoginScreen : AppCompatActivity() {
                         }
                     }
                 }
-                catch (e : FirebaseNoSignedInUserException){
-                    withContext(Dispatchers.Main){
-                        binding.progessBar.visibility = View.GONE
-                        binding.signInTitle.visibility = View.VISIBLE
-                        Toast.makeText(this@LoginScreen,"User not exits",Toast.LENGTH_LONG).show()
-                    }
-                }
                 catch (e : FirebaseNetworkException){
                     withContext(Dispatchers.Main){
                         binding.progessBar.visibility = View.GONE

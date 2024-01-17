@@ -102,8 +102,8 @@ class EndRegisterScreen : Fragment() {
     }
     private fun onSubmit() {
         if(validateUsername()){
-            val email = args.Email
-            val pass = args.Password
+            val email = args.Email // lay email tu bundle o ben start
+            val pass = args.Password // lay pass tu bundle o ben start
             val username = binding.usernameEditText.text
 
             // tạo profile
@@ -114,27 +114,21 @@ class EndRegisterScreen : Fragment() {
 
             CoroutineScope(Dispatchers.IO).launch { // thread(luồng) background để đẩy dữ lieeuj đi
                 try{
-                    withContext(Dispatchers.Main){// đổi luồng thread sang main
+                    withContext(Dispatchers.Main){// đổi luồng sang main
                         binding.progessBar.visibility = View.VISIBLE
                         binding.signupTitle.visibility = View.GONE
                     }
                     // quay lại thread IO background
-                    auth.createUserWithEmailAndPassword(email,pass).await() // hàm đăng kí tài khoản
+                    auth.createUserWithEmailAndPassword(email,pass).await() // hàm đăng kí tài khoản (email, password) vao trong authentication thanh cong tra du lieu ve auth
                     // đăng kí xong nó gán tài khoàn mới vào auth
-                    withContext(Dispatchers.Main){
-                        // kiểm tra auth có rỗng hay không
-                        if(auth.currentUser != null){
-                            withContext(Dispatchers.IO){
-                                // cập nhật tài khoản trong authentication
-                                auth.currentUser!!.updateProfile(profileUser).await() // cập nhật ảnh với tên
-                                withContext(Dispatchers.Main){
-                                    // save người dùng vào realtime database
-                                    // lâấy ta thông tin nguowi dùng ở auth với id , username , image
-                                val user = User(auth.currentUser!!.uid,auth.currentUser!!.displayName.toString(),auth.currentUser!!.email.toString(),auth.currentUser!!.photoUrl.toString())
-                                // lưu thông tin đấy vào realtime db
-                                    saveUser(user)
-                                }
-                            }
+                    if(auth.currentUser != null){
+                        // cập nhật tài khoản trong authentication
+                        auth.currentUser!!.updateProfile(profileUser).await() // cập nhật ảnh với tên
+                        withContext(Dispatchers.Main){
+                            // lâấy ta thông tin nguowi dùng ở authentication với id , username , image
+                            val user = User(auth.currentUser!!.uid,auth.currentUser!!.displayName.toString(),auth.currentUser!!.email.toString(),auth.currentUser!!.photoUrl.toString())
+                            // lưu thông tin đấy vào realtime db
+                            saveUser(user)
                         }
                     }
                 }
@@ -150,6 +144,7 @@ class EndRegisterScreen : Fragment() {
 
     }
 
+    // tra du lieu anh
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         imageProfile = data?.data
@@ -157,6 +152,7 @@ class EndRegisterScreen : Fragment() {
     }
       suspend fun saveUser(user: User){
           withContext(Dispatchers.IO){ // link/user/id
+              //https://anfieldauth-default-rtdb.firebaseio.com/User/2B9YRlH4m3Y4ZmvXHxGdYwLcKSx2
               reference.child(user.id!!).setValue(user).addOnCompleteListener { // lưu vào realtime database
                   if(it.isSuccessful){
                       Toast.makeText(requireContext(),"Register Successfully",Toast.LENGTH_LONG).show()

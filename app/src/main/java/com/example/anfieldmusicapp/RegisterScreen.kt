@@ -23,7 +23,6 @@ import kotlinx.coroutines.withContext
 
 class RegisterScreen : AppCompatActivity() {
     lateinit var binding : ActivityRegisterScreenBinding // view binding
-
     lateinit var auth : FirebaseAuth // authentication
     lateinit var db : FirebaseDatabase // realtime db
     lateinit var reference : DatabaseReference // link api /https://anfieldauth-default-rtdb.firebaseio.com/

@@ -27,9 +27,7 @@ import kotlinx.coroutines.withContext
 class StartRegisterScreen : Fragment() {
     lateinit var binding : FragmentStartRegisterScreenBinding
 
-    val auth by lazy {
-        (activity as RegisterScreen).auth // lấy biến auth cua tk cha registerScreen
-    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
@@ -106,7 +104,7 @@ class StartRegisterScreen : Fragment() {
 
         }
 
-        return error == null
+        return error == null // true
     }
 
     private fun validatePass() : Boolean{
