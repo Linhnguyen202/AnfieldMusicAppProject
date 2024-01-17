@@ -32,7 +32,7 @@ class LoginScreen : AppCompatActivity() {
     lateinit var binding : ActivityLoginScreenBinding
 
     val auth : FirebaseAuth by lazy {
-        (application as MyApplication).auth
+        (application as MyApplication).auth // lay auth tu application
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,7 +84,7 @@ class LoginScreen : AppCompatActivity() {
             binding.emailContainer.isErrorEnabled = true
 
         }
-        return error != null
+        return error == null
     }
     private fun validatePass() : Boolean{
         val pass = binding.passEditText.text.toString()
@@ -100,17 +100,10 @@ class LoginScreen : AppCompatActivity() {
             binding.passContainer.isErrorEnabled = true
 
         }
-        return error != null
-    }
-    private fun validate() : Boolean{
-        var validateValue = false
-        if(validateEmail()) validateValue = true
-        if(validatePass()) validateValue = true
-        return validateValue
-
+        return error == null
     }
     private fun LoginUser(){
-        if(!validate()){
+        if(validateEmail() && validatePass()){
             val email = binding.emailEditText.text.toString()
             val pass = binding.passEditText.text.toString()
             CoroutineScope(Dispatchers.IO).launch {
@@ -132,16 +125,16 @@ class LoginScreen : AppCompatActivity() {
                                 finish()
                             }
                         }
-                    }
+                    }.await()
                 }
-                catch (e : FirebaseNetworkException){
+                catch (e : FirebaseNetworkException){ // mat mang
                     withContext(Dispatchers.Main){
                         binding.progessBar.visibility = View.GONE
                         binding.signInTitle.visibility = View.VISIBLE
                         Toast.makeText(this@LoginScreen,"Internet Disconnected",Toast.LENGTH_LONG).show()
                     }
                 }
-                catch (e : FirebaseAuthInvalidCredentialsException){
+                catch (e : FirebaseAuthInvalidCredentialsException){ // sai mat khau
                     withContext(Dispatchers.Main){
                         binding.progessBar.visibility = View.GONE
                         binding.signInTitle.visibility = View.VISIBLE
@@ -149,7 +142,7 @@ class LoginScreen : AppCompatActivity() {
                     }
 
                 }
-                catch (e : FirebaseAuthInvalidUserException){
+                catch (e : FirebaseAuthInvalidUserException){ // ng dung ko ton tai
                     withContext(Dispatchers.Main){
                         binding.progessBar.visibility = View.GONE
                         binding.signInTitle.visibility = View.VISIBLE

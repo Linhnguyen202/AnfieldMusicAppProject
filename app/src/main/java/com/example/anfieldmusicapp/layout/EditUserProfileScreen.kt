@@ -53,16 +53,24 @@ class EditUserProfileScreen : Fragment() {
         this@EditUserProfileScreen.myView = view
         db = FirebaseDatabase.getInstance()
         reference = db.getReference("User")
-        val user = sharePreferenceUtils.getUser(requireContext())
+
+
+        val user = sharePreferenceUtils.getUser(requireContext()) // lay thong tin user tu share
+        // gan thong tin vao textg
         binding.usernameEditText.setText(user.firstName.toString())
         Glide.with(this).load(user.image).into(binding.imageProfile)
 
+
+        // quay ve trang trc
         binding.toolbar.backBtn.setOnClickListener {
             findNavController().popBackStack()
         }
+
+        // an nut update
         binding.updateBtn.setOnClickListener {
             updateUserData();
         }
+        // lay anh
         binding.cameraBtn.setOnClickListener {
             ImagePicker.with(this)
                 .crop()	    			//Crop image(Optional), Check Customization for more option
@@ -75,14 +83,17 @@ class EditUserProfileScreen : Fragment() {
     }
 
     private fun updateUserData() {
+        // tao profile nguoi dung
         val profileUser = UserProfileChangeRequest.Builder()
             .setDisplayName(binding.usernameEditText.text.toString()) // tên
             .setPhotoUri(imageProfile) // ảnh
             .build()
+
             binding.progessBar.visibility = View.VISIBLE
             binding.updateBtn.visibility = View.GONE
+
             CoroutineScope(Dispatchers.IO).launch{
-              auth.currentUser!!.updateProfile(profileUser).await() // cập nhật ảnh với tên
+              auth.currentUser!!.updateProfile(profileUser).await() // cập nhật ảnh với tên o authentication
                 withContext(Dispatchers.Main){
                     binding.progessBar.visibility = View.GONE
                     binding.updateBtn.visibility = View.VISIBLE
@@ -94,10 +105,14 @@ class EditUserProfileScreen : Fragment() {
     }
 
     private suspend fun saveUser(user: User) {
+        // dang key value (key : value  )
         val updates = hashMapOf<String, Any>(
            user.id.toString() to user
         )
+
         try{
+            //https://anfieldauth-default-rtdb.firebaseio.com/User
+            // tim key va update
             reference.updateChildren(updates).addOnCompleteListener {
                 if(it.isSuccessful){
                     Snackbar.make(this@EditUserProfileScreen.myView,"Update user Successfully",
