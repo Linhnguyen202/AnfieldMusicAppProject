@@ -124,6 +124,7 @@ class MenuScreen : Fragment() {
                                     val playlist = PlaylistResponse(item.key.toString(),snapshot.value.toString())
                                     playlistArray.add(playlist)
                                     adapter.differ.submitList(playlistArray)
+
                                 }
 
                                 override fun onCancelled(error: DatabaseError) {

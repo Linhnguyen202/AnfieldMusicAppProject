@@ -144,6 +144,9 @@ class PlaylistForm : BottomSheetDialogFragment() {
                 updateData()
             }
         }
+        binding.cancelBtn.setOnClickListener {
+            this.dismiss()
+        }
 
     }
     fun addData(){

@@ -90,7 +90,6 @@ class SearchScreen : Fragment() {
                     Toast.makeText(requireContext(),it.message, Toast.LENGTH_LONG).show()
                 }
                 is Resource.Loading -> {
-                    Toast.makeText(requireContext(),"Loading", Toast.LENGTH_LONG).show()
                 }
 
             }
