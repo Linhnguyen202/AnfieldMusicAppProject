@@ -42,7 +42,7 @@ class MenuScreen : Fragment() {
     val user by lazy {
         sharePreferenceUtils.getUser(requireContext()).id
     }
-    lateinit var broadcastReceiver : BroadcastReceiver
+    lateinit var broadcastReceiver : BroadcastReceiver //
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +50,9 @@ class MenuScreen : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentMenuScreenBinding.inflate(layoutInflater)
+        // tao broadcast
         setUpBroadCast()
+        // dang ky broadcast
         requireContext().registerReceiver(broadcastReceiver, IntentFilter("UPDATE_ACTION"),
             Context.RECEIVER_NOT_EXPORTED)
         return binding.root
@@ -61,32 +63,33 @@ class MenuScreen : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         db = FirebaseDatabase.getInstance()
         reference = db.getReference("Playlist")
-        adapter = PlaylistAdapter(onClick,onClickDelete,onClickUpdate)
-        binding.playlistList.adapter = this@MenuScreen.adapter
+        adapter = PlaylistAdapter(onClick,onClickDelete,onClickUpdate) // tao adapter
+        binding.playlistList.adapter = this@MenuScreen.adapter // ket noi adapter
+        // lay data
         getData()
-        reference.child(user.toString()).addChildEventListener(object :
-            ChildEventListener {
-            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-
-            }
-
-            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-
-            }
-
-            override fun onChildRemoved(snapshot: DataSnapshot) {
-                getData()
-            }
-
-            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-
-            }
-
-        })
+//        reference.child(user.toString()).addChildEventListener(object :
+//            ChildEventListener {
+//            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+//
+//            }
+//
+//            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+//
+//            }
+//
+//            override fun onChildRemoved(snapshot: DataSnapshot) {
+//
+//            }
+//
+//            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+//
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//
+//            }
+//
+//        })
 
     }
     private fun setUpBroadCast(){
@@ -100,6 +103,7 @@ class MenuScreen : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        // huuy dang ki
         requireContext().unregisterReceiver(broadcastReceiver)
     }
     override fun onDestroy() {
@@ -109,6 +113,7 @@ class MenuScreen : Fragment() {
 
     private fun getData() {
         var playlistArray : ArrayList<PlaylistResponse> = ArrayList()
+        // lay danh sach playlist
         CoroutineScope(Dispatchers.IO).launch {
             reference.child(user.toString()).addValueEventListener(object  : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -145,19 +150,23 @@ class MenuScreen : Fragment() {
         }
     }
 
-    val onClick : (String) -> Unit = {
+    val onClick : (String) -> Unit = {idPlaylit ->
         val bundle = bundleOf(
-            "Playlist" to it
+            "Playlist" to idPlaylit
         )
         findNavController().navigate(R.id.action_menuScreen_to_playlistMusicListScreen,bundle)
     }
-    val onClickUpdate : (String) -> Unit = {
-        val playlistForm = PlaylistForm.newInstanceUpdate(it)
+    val onClickUpdate : (String) -> Unit = { idPlaylist ->
+        val playlistForm = PlaylistForm.newInstanceUpdate(idPlaylist)
         playlistForm.show(parentFragmentManager,"UPDATE_FORM")
     }
 
-    val onClickDelete : (String) -> Unit = {
-        reference.child(user.toString()).child(it).removeValue()
+    val onClickDelete : (String) -> Unit = { idPlaylist ->
+        reference.child(user.toString()).child(idPlaylist).removeValue().addOnCompleteListener {
+            if(it.isSuccessful){
+                getData()
+            }
+        }
     }
 
 }

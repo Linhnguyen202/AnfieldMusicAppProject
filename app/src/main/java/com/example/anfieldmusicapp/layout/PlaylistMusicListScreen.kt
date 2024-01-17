@@ -50,35 +50,35 @@ class PlaylistMusicListScreen : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         db = FirebaseDatabase.getInstance()
-        val user = sharePreferenceUtils.getUser(requireContext()).id
+        val user = sharePreferenceUtils.getUser(requireContext()).id // lay id user trong sharePreferece
         val playlistId  = args.Playlist.toString()
         reference = db.getReference("Playlist")
         adapter = MusicPlaylistAdapter(onClickMuic,onClickDeleteMusic)
         binding.musicList.adapter = this@PlaylistMusicListScreen.adapter
         getData()
         addEvents()
-        reference.child(user.toString()).child(playlistId).child("music").addChildEventListener(object : ChildEventListener{
-            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-
-            }
-
-            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-
-            }
-
-            override fun onChildRemoved(snapshot: DataSnapshot) {
-                getData()
-            }
-
-            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-
-            }
-
-        })
+//        reference.child(user.toString()).child(playlistId).child("music").addChildEventListener(object : ChildEventListener{
+//            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+//
+//            }
+//
+//            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+//
+//            }
+//
+//            override fun onChildRemoved(snapshot: DataSnapshot) {
+//                getData()
+//            }
+//
+//            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+//
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//
+//            }
+//
+//        })
     }
 
     private fun addEvents() {
@@ -89,7 +89,7 @@ class PlaylistMusicListScreen : Fragment() {
 
 
     private fun getData() {
-        val playlistId  = args.Playlist.toString()
+        val playlistId  = args.Playlist.toString() // lay id playlist tu argument
         var musicArray : ArrayList<MusicFirebase> = ArrayList()
         reference.child(user.toString()).child(playlistId).child("music").addValueEventListener(object  : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -127,9 +127,13 @@ class PlaylistMusicListScreen : Fragment() {
     }
 
     private fun deleteDataMusic(music : MusicFirebase){
-        val user = sharePreferenceUtils.getUser(requireContext()).id
-        val playlistId  = args.Playlist.toString()
-        reference.child(user.toString()).child(playlistId).child("music").child(music.id).removeValue()
+        val user = sharePreferenceUtils.getUser(requireContext()).id // lay id user trong share
+        val playlistId  = args.Playlist.toString() // lay id playlist tu args
+        reference.child(user.toString()).child(playlistId).child("music").child(music.id).removeValue().addOnCompleteListener {
+            if(it.isSuccessful){
+                getData()
+            }
+        }
     }
 
 

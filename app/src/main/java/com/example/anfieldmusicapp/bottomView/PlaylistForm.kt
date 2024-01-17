@@ -54,6 +54,7 @@ class PlaylistForm : BottomSheetDialogFragment() {
     }
     companion object {
         const val ARG_DATA = "key"
+        // them moi
         fun newInstance(music: Music): PlaylistForm {
             val fragment = PlaylistForm()
             val args = bundleOf(
@@ -62,7 +63,7 @@ class PlaylistForm : BottomSheetDialogFragment() {
             fragment.arguments = args
             return fragment
         }
-
+        // update
         fun newInstanceUpdate(id: String): PlaylistForm {
             val fragment = PlaylistForm()
             val args = Bundle()
@@ -95,8 +96,7 @@ class PlaylistForm : BottomSheetDialogFragment() {
         db = FirebaseDatabase.getInstance()
         reference = db.getReference("Playlist")
 
-        getData()
-        observerData()
+//        observerData()
         addEvents()
 
 
@@ -104,38 +104,35 @@ class PlaylistForm : BottomSheetDialogFragment() {
 
 
 
-    private fun observerData() {
-        reference.child(user.toString()).child(arguments?.getString("key").toString()).addChildEventListener(object : ChildEventListener{
-            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-
-            }
-            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                Snackbar.make(getDialog()?.getWindow()!!.getDecorView(),"Update playlist Successfully",
-                    Snackbar.LENGTH_SHORT).show()
-                binding.playListEdt.text!!.clear()
-                this@PlaylistForm.context?.sendBroadcast(Intent("UPDATE_ACTION"))
-            }
-
-            override fun onChildRemoved(snapshot: DataSnapshot) {
-
-            }
-
-            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-
-            }
-
-        })
-
-    }
-
-    private fun getData() {
+//    private fun observerData() {
+//        reference.child(user.toString()).child(arguments?.getString("key").toString()).addChildEventListener(object : ChildEventListener{
+//            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+//
+//            }
+//            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+//                Snackbar.make(getDialog()?.getWindow()!!.getDecorView(),"Update playlist Successfully",
+//                    Snackbar.LENGTH_SHORT).show()
+//                binding.playListEdt.text!!.clear()
+//                this@PlaylistForm.context?.sendBroadcast(Intent("UPDATE_ACTION"))
+//            }
+//
+//            override fun onChildRemoved(snapshot: DataSnapshot) {
+//
+//            }
+//
+//            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+//
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//
+//            }
+//
+//        })
+//
+//    }
 
 
-    }
 
     private fun addEvents() {
         val user = sharePreferenceUtils.getUser(requireContext()).id
@@ -152,10 +149,14 @@ class PlaylistForm : BottomSheetDialogFragment() {
     fun addData(){
         val musicData : Music = arguments?.get("music") as Music
         val playlist = binding.playListEdt.text.toString()
+        // dang key value
         val dataPlaylist = LinkedHashMap<String,Music>()
+        //gan du lieu cho dataPLaylist key: music.id, value : musc
         dataPlaylist[musicData!!._id.toString()] = musicData!!
 
+        // tao data
         val playlistData = Playlist(playlist,dataPlaylist)
+        // https://anfieldauth-default-rtdb.firebaseio.com/Playlist/dkFQBzjxYXQJ3G3kSfjsdGKHY3e2
         reference.child(user.toString()).push().setValue(playlistData).addOnCompleteListener {
             if(it.isSuccessful){
                 Snackbar.make(getDialog()?.getWindow()!!.getDecorView(),"Add playlist Successfully",
@@ -168,11 +169,19 @@ class PlaylistForm : BottomSheetDialogFragment() {
         }
     }
     fun updateData()  {
-        val playlist = binding.playListEdt.text.toString()
-        val updates = hashMapOf<String, Any>(
-            "name" to playlist
+        val playlistName = binding.playListEdt.text.toString()
+        // dang key value
+        val updateData = hashMapOf<String, Any>(
+            "name" to playlistName
         )
-        reference.child(user.toString()).child(arguments?.getString("key").toString()).updateChildren(updates)
+        reference.child(user.toString()).child(arguments?.getString("key").toString()).updateChildren(updateData).addOnCompleteListener {
+            if(it.isSuccessful){
+                Snackbar.make(getDialog()?.getWindow()!!.getDecorView(),"Update playlist Successfully",
+                    Snackbar.LENGTH_SHORT).show()
+                binding.playListEdt.text!!.clear()
+                this@PlaylistForm.context?.sendBroadcast(Intent("UPDATE_ACTION"))
+            }
+        }
     }
 
 

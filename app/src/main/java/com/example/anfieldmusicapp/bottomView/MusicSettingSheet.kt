@@ -28,7 +28,7 @@ class MusicSettingSheet : BottomSheetDialogFragment() {
     lateinit var viewModel: MusicViewModel
     lateinit var repository : MusicRepository
     lateinit var viewModelFactory : MusicViewModelFactory
-    val musicId by lazy {
+    val musicId by lazy { // 1. lay id bai hat hien tai
         (activity as MainActivity).mediaService.player!!.currentMediaItem!!.mediaId
     }
     var musicData : Music? = null
@@ -46,6 +46,7 @@ class MusicSettingSheet : BottomSheetDialogFragment() {
         repository = MusicRepository(requireContext())
         viewModelFactory = MusicViewModelFactory(MyApplication(),repository)
         viewModel =  ViewModelProvider(this,viewModelFactory)[MusicViewModel::class.java]
+
         getData()
         addEvents()
         observerData()
@@ -55,9 +56,11 @@ class MusicSettingSheet : BottomSheetDialogFragment() {
     }
 
     private fun observerData() {
+        // 3. kiem tra du lieu ve hay chua
         viewModel.musicProfile.observe(viewLifecycleOwner){
             when(it){
                 is Resource.Success -> {
+                    //4 lay dc se gan du lieu vao musicData
                     it.data?.let { MusicResponse ->
                         musicData = MusicResponse.data
                     }
@@ -75,8 +78,8 @@ class MusicSettingSheet : BottomSheetDialogFragment() {
 
     private fun addEvents() {
         binding.addPlaylistBtn.setOnClickListener {
-            val playlistSheet = PlaylistSheet.newInstance(musicData!!)
-            playlistSheet.show(parentFragmentManager,"playListSheet")
+            val playlistSheet = PlaylistSheet.newInstance(musicData!!) // gui du lieu sang ben PLaylistSheetingSheet
+            playlistSheet.show(parentFragmentManager,"playListSheet") // show PlaylistSheet
             this.dismiss()
         }
         binding.watchMvBtn.setOnClickListener {
@@ -90,6 +93,7 @@ class MusicSettingSheet : BottomSheetDialogFragment() {
     }
 
     private fun getData() {
+        //2. lay thong tin bai hien tai dqua api
         viewModel.getMusicProfile(musicId)
     }
 
